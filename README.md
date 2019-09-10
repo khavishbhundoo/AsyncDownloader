@@ -3,6 +3,10 @@ AsyncDownloader is a .NET Core library whose main purpose is to download files i
 
 # Features
 
+- Ability to downloads files of any size asynchronously efficiently
+- Streams data to disk rather than storing everything in memory
+- Cross platform build with .Net Core 2.2
+
 # Properties
 
 `SpeedBytesSecs` - Returns the current download speed in bytes per seconds.
@@ -75,6 +79,13 @@ namespace AsyncDownloaderSample
 ```
 
 More examples can be found in the `AsyncDownloaderTest/AsyncDownloaderTest.cs` file
+
+# References
+
+[Getting burnt with HttpClient](https://medium.com/@szntb/getting-burnt-with-httpclient-9c1712151039)
+
+[Beware of the .NET HttpClient](https://www.nimaara.com/beware-of-the-net-httpclient/)
+
 
 # License
 
