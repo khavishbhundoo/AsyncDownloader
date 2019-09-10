@@ -5,6 +5,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Khavish Anshudass Bhundoo</Authors>
+    <PackageProjectUrl>https://github.com/khavishbhundoo/AsyncDownloader</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>

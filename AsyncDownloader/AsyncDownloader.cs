@@ -17,10 +17,19 @@ namespace AsyncDownloader
         static SocketsHttpHandler handler = new SocketsHttpHandler
         {
             AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
+            /*
+             * Time to wait when tring to connect to a host similar to CURLOPT_CONNECTTIMEOUT in curl
+             * Ensure that we don't keep waiting forever to connect since we set infinite timeout for the whole transfer
+             * Source : https://github.com/dotnet/corefx/issues/40706
+             */
             ConnectTimeout = TimeSpan.FromSeconds(5)
         };
         static readonly HttpClient client = new HttpClient(handler)
         {
+            /* 
+             * This timeout is for the whole transfer, that's why it has been set to infinite since we want to be able to download files of any size
+             * Source : https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient.timeout?view=netframework-4.8#remarks
+             */
             Timeout = Timeout.InfiniteTimeSpan
         };
 
@@ -107,7 +116,6 @@ namespace AsyncDownloader
         /// <summary>
         /// Throw an Exception if a download has been aborted
         /// </summary>
-        /// <returns></returns>
         public string AbortException()
         {
             if (!string.IsNullOrWhiteSpace(this._abort_message))
@@ -118,7 +126,8 @@ namespace AsyncDownloader
 
         }
         /// <summary>
-        /// Return the filename of the download file from the content-disposition header.If no such header is present, then get the filename from the path
+        /// Return the filename of the download file from the content-disposition header.If no such header is present, then get the filename from the path.
+        /// If the filename already exist in the directory , then append a uniquely generated string to the file
         /// </summary>
         public string FileName { get; private set; } = "";
         /// <summary>
@@ -164,7 +173,7 @@ namespace AsyncDownloader
         }
 
         /// <summary>
-        /// 
+        /// Get or set url to download
         /// </summary>
         public string Url
         {
@@ -221,9 +230,8 @@ namespace AsyncDownloader
         #endregion Properties
 
         /// <summary>
-        /// 
+        /// Main method responsible for downloading file asynchronously
         /// </summary>
-        /// <returns></returns>
         private async Task FetchLargeFiles()
         {
 
